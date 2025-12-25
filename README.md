@@ -27,4 +27,4 @@ For further details on contributing please refer to the [contribution guide](CON
 
 ## Other
 
-This repo is release under this [license](LICENSE)
+This repo is released under AGPL-3.0-only. See [license](LICENSE)
