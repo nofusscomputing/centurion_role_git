@@ -3,7 +3,7 @@ name: "Epic"
 description: "Capture a high-level initiative or large capability that spans multiple features"
 title: "<epic story>"
 labels: 
-  - "triage"
+  - "Type/Epic"
 type: epic
 
 
