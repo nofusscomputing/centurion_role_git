@@ -12,7 +12,7 @@ git_repo_private: false
 git_repo_default_branch: master
 
 
-git_gitea_create_repo_org:
+git_gitea_create_repo_org_default:
   auto_init: false
   default_branch: "{{ git_repo_default_branch }}"
   description: "{{ git_repo_description | default(omit) }}"
@@ -27,7 +27,7 @@ git_gitea_create_repo_org:
   trust_model: default    # default, collaborator, committer, collaboratorcommitter
 
 
-git_gitea_config:
+git_gitea_config_default:
   allow_fast_forward_only_merge: true
   allow_manual_merge: true
   allow_merge_commits: true
@@ -35,7 +35,7 @@ git_gitea_config:
   allow_rebase_explicit: true
   allow_rebase_update: true
   allow_squash_merge: true
-  archived: false
+  # archived: false
   autodetect_manual_merge: true
   default_allow_maintainer_edit: true
   default_branch: "{{ git_repo_default_branch }}"
@@ -52,7 +52,7 @@ git_gitea_config:
   #   external_wiki_url: string
   has_actions: true
   has_issues: true
-  has_packages: true
+  has_packages: false
   has_projects: true
   has_pull_requests: true
   has_releases: true
@@ -69,7 +69,7 @@ git_gitea_config:
   # website: string
 
 
-git_gitea_repo_migrate:
+git_gitea_repo_migrate_default:
   # auth_password: string
   # auth_token: string
   # auth_username: string

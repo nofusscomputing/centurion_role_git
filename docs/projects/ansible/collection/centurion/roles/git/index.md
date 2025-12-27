@@ -19,6 +19,8 @@ A [Centurion ERP Role](../../../../../centurion_erp/index.md) for Git Operations
 
 - [Create / Import a Repository](./create.md)
 
+- [Configure a Repository](./configure.md)
+
 
 ## Variables
 

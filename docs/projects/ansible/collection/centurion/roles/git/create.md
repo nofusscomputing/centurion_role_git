@@ -12,8 +12,8 @@ This section contains documentation for repository tasks.
 ## Create Repository
 
 | Ansible Tag | Action | Check Mode Supported | Required<br>Variables | Description |
-| :---:|:---|:---:|:---:|:---|
-| `gitea` | - | - |  - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
+|:---:|:---|:---:|:---:|:---|
+| `gitea` | - | - |  - | Ensures that Gitea related tasks run. **Mandatory for Gitea** |
 | | Create Organisation<br>Repository | Yes | `git_gitea_create_repo_org` | Creates a git repository |
 | | Migrate Repository | Yes | `git_gitea_repo_migrate` | Imports a git repository. This will occur if variable `git_repo_clone_addr` is set, failing to set this variable and no repository will be migrated. |
 | _No Tags_ | - | - | - | If no tags are specified, then no task will run. |
@@ -28,7 +28,7 @@ Variables for each task are a mapping of the required keys that form the body of
 
 ### Create Organisation Repository
 
-To obtain the keys and values for mapping `git_gitea_create_repo_org`, navigate to your local gitea's swagger docs for endpoint `/repos/{owner}/{repo}`.
+To obtain the keys and values for mapping `git_gitea_create_repo_org`, navigate to your local gitea's swagger docs for endpoint `POST /repos/{owner}/{repo}`.
 
 In addition, the following table lists variables, that if you set will be over-ridden. To set the value of the variable, set the value of the source variable.
 
@@ -47,7 +47,7 @@ Not yet supported.
 
 ### Migrate repository
 
-To obtain the keys and values for mapping `git_gitea_repo_migrate`, navigate to your local gitea's swagger docs for endpoint `/repos/migrate`.
+To obtain the keys and values for mapping `git_gitea_repo_migrate`, navigate to your local gitea's swagger docs for endpoint `POST /repos/migrate`.
 
 In addition, the following table lists variables, that if you set will be over-ridden. To set the value of the variable, set the value of the source variable.
 

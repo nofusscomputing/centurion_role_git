@@ -74,6 +74,8 @@ nav:
           
           - projects/ansible/collection/centurion/roles/git/index.md
 
+          - projects/ansible/collection/centurion/roles/git/configure.md
+
           - projects/ansible/collection/centurion/roles/git/create.md
 
 
