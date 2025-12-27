@@ -38,3 +38,13 @@
       - gitea_configuration_returned is mapping
   tags:
     - gitea
+
+
+- name: Configure Repo
+  ansible.builtin.include_tasks:
+    file: config.yaml
+    apply:
+      tags:
+        - always
+  tags:
+    - gitea
