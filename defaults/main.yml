@@ -52,7 +52,7 @@ git_gitea_config:
   #   external_wiki_url: string
   has_actions: true
   has_issues: true
-  has_packages: true
+  has_packages: false
   has_projects: true
   has_pull_requests: true
   has_releases: true

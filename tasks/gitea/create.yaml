@@ -111,8 +111,12 @@
       {%- for key, value in ns.returned_configuration.items() -%}
             {%- if
               key not in skip_keys
-              and
+                and
               key in git_gitea_config
+                and
+              value != ""
+                and
+              git_gitea_config[key] != omit
             -%}
 
               {% set ns.configuration = ns.configuration | combine({ key: value }) %}
@@ -121,3 +125,7 @@
       {%- endfor -%}
 
       {{ git_gitea_config | combine(ns.configuration | default({}), recursive=True) }}
+  # Note:
+  #   - Do not return where git_gitea_config[key]=omit
+  #   - Do not return where value=""
+  #   - Do not return if the key not in git_gitea_config
