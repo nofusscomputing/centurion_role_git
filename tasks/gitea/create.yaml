@@ -7,6 +7,9 @@
     - name: Fetch Authenticated User
       ansible.builtin.include_tasks:
         file: fetch_auth_user.yaml
+        apply:
+          tags:
+            - always
 
 
 - name: Determin Repository Type

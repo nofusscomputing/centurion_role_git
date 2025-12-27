@@ -1,19 +1,26 @@
 ---
-# defaults file for git
+
+
+# git_api_url:
+
+# git_repo_owner:
+# git_repo_name:
+# git_repo_description:
+
 git_repo_private: false
 git_default_branch: master
 
 
 git_gitea_create_repo_org:
   auto_init: false
-  # default_branch: master
-  # description: string
+  default_branch: "{{ git_default_branch }}"
+  description: "{{ git_repo_description | default(omit) }}"
   # gitignores: string
   # issue_labels: string
   # license: string
   # name: string
   object_format_name: sha1    # sha1, sha256
-  # private: true
+  private: "{{ git_repo_private }}"
   # readme: string
   template: false
   trust_model: default    # default, collaborator, committer, collaboratorcommitter
@@ -30,10 +37,10 @@ git_gitea_config:
   archived: false
   autodetect_manual_merge: true
   default_allow_maintainer_edit: true
-  # default_branch: string
+  default_branch: "{{ git_default_branch }}"
   default_delete_branch_after_merge: true
   default_merge_style: merge    # "merge", "rebase", "rebase-merge", "squash", or "fast-forward-only"
-  # description: string
+  description: "{{ git_repo_description | default(omit) }}"
   enable_prune: true
   # external_tracker:
   #   external_tracker_format: string
@@ -55,7 +62,7 @@ git_gitea_config:
   #   enable_issue_dependencies: true
   #   enable_time_tracker: true
   mirror_interval: 0s
-  private: true
+  private: "{{ git_repo_private }}"
   projects_mode: all    # repo to only allow repo-level projects, owner to only allow owner projects, all to allow both.
   template: false
   # website: string

@@ -4,6 +4,7 @@
   ansible.builtin.include_tasks:
     file: common/http.yaml
   vars:
+    in_check_mode: false
     url: "{{ lookup('env', 'GIT_API_URL') }}/orgs/{{ git_repo_owner }}/repos"
     validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') }}"
     method: GET
@@ -28,8 +29,6 @@
       {%- else -%}
         {{ false }}
       {%- endif -%}
-  # changed_when: >
-  #   To Do: checkmode=true and repository_exists=false
 
 
 - name: Add a Repository
@@ -41,19 +40,7 @@
     method: POST
     register_var: http_post_gitea_orgs_repos
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
-    json_body:
-      auto_init: "{{ git_gitea_create_repo_org.auto_init }}"
-      default_branch: "{{ git_default_branch }}"
-      description: "{{ git_repo_description | default(omit) }}"
-      gitignores: "{{ git_gitea_create_repo_org.gitignores | default(omit) }}"
-      issue_labels: "{{ git_gitea_create_repo_org.issue_labels | default(omit) }}"
-      license: "{{ git_gitea_create_repo_org.license | default(omit) }}"
-      name: "{{ git_repo_name }}"
-      object_format_name: "{{ git_gitea_create_repo_org.object_format_name | default(omit) }}"
-      private: "{{ git_repo_private }}"
-      readme: "{{ git_gitea_create_repo_org.readme | default(omit) }}"
-      template: "{{ git_gitea_create_repo_org.template }}"
-      trust_model: "{{ git_gitea_create_repo_org.trust_model }}"
+    json_body: "{{ git_gitea_create_repo_org }}"
   when: >
     not repository_exists
       and
@@ -108,8 +95,10 @@
             {% set ns.returned_configuration = org_repo %}
           {%- endif -%}
         {%- endfor -%}
-      {%- else -%}
+      {%- elif not ansible_check_mode|bool -%}
         {% set ns.returned_configuration = http_post_gitea_orgs_repos.json -%}
+      {%- else -%}
+        {% set ns.returned_configuration = {} -%}
       {%- endif %}
 
       {%- for key, value in ns.returned_configuration.items() -%}

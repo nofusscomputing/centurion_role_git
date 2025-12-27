@@ -1,6 +1,6 @@
 ---
-title: Repositories
-description: Centurion Role for Git Repository Documentation.
+title: Create / Import
+description: Create Documentation for Centurion Role Git.
 date: 2025-12-26
 template: project.html
 about: https://github.com/nofusscomputing/centurion_role_git
@@ -9,18 +9,23 @@ about: https://github.com/nofusscomputing/centurion_role_git
 This section contains documentation for repository tasks.
 
 
-## Create
+## Create Repository
 
-| Ansible Tag | Action | Description |
-| :---:|:---|:---|
-| `gitea` | - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
-| | Create Repository | Creates a git repository |
-| _No Tags_ |  | If no tags are specified, then no task will run. |
+| Ansible Tag | Action | Check Mode Supported | Required<br>Variables | Description |
+| :---:|:---|:---:|:---:|:---|
+| `gitea` | - | - |  - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
+| | Create Organisation<br>Repository | Yes | `git_gitea_create_repo_org` | Creates a git repository |
+| _No Tags_ | - | - | - | If no tags are specified, then no task will run. |
 
 Create task enables the creation of a git repository. The Tasks are smart enough to determine between a user and an organization repository.
 
 
-### Workflow
+## Variables
+
+Variables for each task are a mapping of the required keys that form the body of the API request. The mappings for each task are as defined in the table above.
+
+
+## Workflow
 
 The create task follows the following workflow.
 
@@ -82,23 +87,10 @@ flowchart LR
 
     CREATE_REPO_AGGREGATE_CONFIG[Build Config from returned data]
 
-        CREATE_REPO_AGGREGATE_CONFIG --> REPO_DATA_MATCHES
-
-
-    REPO_DATA_MATCHES{data matches}
-
-        REPO_DATA_MATCHES -->| no | PATCH_REPO
-
-
-    PATCH_REPO>Update repo data]
-
-
 
     end
 
-    REPO_DATA_MATCHES -->| yes | FINISH
-
-
+    CREATE_REPO_AGGREGATE_CONFIG --> FINISH
 
     FINISH[Finished]
 

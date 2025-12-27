@@ -23,6 +23,7 @@
         validate_certs: "{{ validate_certs | default(true) }}"
       changed_when: >
         url_request.status == 201
+      check_mode: "{{ in_check_mode | default(omit) }}"
       register: url_request
       no_log: >    # Contains a secret that logging shows
           {{ nfc_pb_disable_log | default(true) }}

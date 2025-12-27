@@ -31,7 +31,7 @@
     - gitea
 
 
-- name: Check Repository Configuration
+- name: Check Repository Configuration Exists
   ansible.builtin.assert:
     that:
       - gitea_configuration_returned is defined

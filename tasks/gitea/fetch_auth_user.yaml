@@ -4,6 +4,7 @@
   ansible.builtin.include_tasks:
     file: common/http.yaml
   vars:
+    in_check_mode: false
     url: "{{ lookup('env', 'GIT_API_URL') }}/user"
     validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') }}"
     method: GET
