@@ -69,7 +69,7 @@ git_gitea_config:
   # website: string
 
 
-git_gitea_migrate:
+git_gitea_repo_migrate:
   # auth_password: string
   # auth_token: string
   # auth_username: string

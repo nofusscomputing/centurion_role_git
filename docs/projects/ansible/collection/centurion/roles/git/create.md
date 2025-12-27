@@ -15,7 +15,7 @@ This section contains documentation for repository tasks.
 | :---:|:---|:---:|:---:|:---|
 | `gitea` | - | - |  - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
 | | Create Organisation<br>Repository | Yes | `git_gitea_create_repo_org` | Creates a git repository |
-| | Migrate Repository | Yes | `git_gitea_migrate` | Imports a git repository |
+| | Migrate Repository | Yes | `git_gitea_repo_migrate` | Imports a git repository |
 | _No Tags_ | - | - | - | If no tags are specified, then no task will run. |
 
 Create task enables the creation of a git repository. This includes importing a repository. The Tasks are smart enough to determine between a user and an organization repository.
@@ -38,7 +38,7 @@ Not yet supported.
 
 ### Migrate repository
 
-To obtain the keys and values for mapping `git_gitea_migrate`, navigate to your local gitea's swagger docs for endpoint `/repos/migrate`.
+To obtain the keys and values for mapping `git_gitea_repo_migrate`, navigate to your local gitea's swagger docs for endpoint `/repos/migrate`.
 
 
 ## Workflow

@@ -3,8 +3,8 @@
 - name: Confirm that service is set
   ansible.builtin.assert:
     that:
-      - git_gitea_migrate.service is defined
-      - git_gitea_migrate.service != omit
+      - git_gitea_repo_migrate.service is defined
+      - git_gitea_repo_migrate.service != omit
     msg: >-
       Could not determine the service type.
       You must set service to one of [ git, github, gitea, gitlab, gogs, onedev, gitbucket, codebase, codecommit ]
@@ -19,4 +19,4 @@
     method: POST
     register_var: http_post_gitea_migration
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
-    json_body: "{{ git_gitea_migrate }}"
+    json_body: "{{ git_gitea_repo_migrate }}"
