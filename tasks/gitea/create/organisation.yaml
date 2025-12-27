@@ -6,7 +6,7 @@
   vars:
     in_check_mode: false
     url: "{{ lookup('env', 'GIT_API_URL') }}/orgs/{{ git_repo_owner }}/repos"
-    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') }}"
+    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') | default(true) }}"
     method: GET
     register_var: http_get_gitea_orgs_repos
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
@@ -36,7 +36,7 @@
     file: common/http.yaml
   vars:
     url: "{{ lookup('env', 'GIT_API_URL') }}/orgs/{{ git_repo_owner }}/repos"
-    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') }}"
+    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') | default(true) }}"
     method: POST
     register_var: http_post_gitea_orgs_repos
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"

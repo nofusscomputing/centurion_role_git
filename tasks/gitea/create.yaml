@@ -45,7 +45,7 @@
   when: >
     git_repo_clone_addr is defined
       and
-    not org_repository_exists
+    not repository_exists
 
 
 - name: Build Repository config
@@ -90,7 +90,7 @@
       {%- set ns = namespace( ignore_hosts= []) -%}
       {%- set ns.configuration = {} -%}
       {%- set ns.returned_configuration = {} -%}
-      {%- if org_repository_exists -%}
+      {%- if repository_exists -%}
         {%- for org_repo in http_get_gitea_orgs_repos.json -%}
           {%- if org_repo.name | string == git_repo_name -%}
             {% set ns.returned_configuration = org_repo %}
