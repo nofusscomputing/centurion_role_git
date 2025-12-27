@@ -27,7 +27,7 @@ git_gitea_create_repo_org:
   trust_model: default    # default, collaborator, committer, collaboratorcommitter
 
 
-git_gitea_config:
+git_gitea_config_default:
   allow_fast_forward_only_merge: true
   allow_manual_merge: true
   allow_merge_commits: true
@@ -35,7 +35,7 @@ git_gitea_config:
   allow_rebase_explicit: true
   allow_rebase_update: true
   allow_squash_merge: true
-  archived: false
+  # archived: false
   autodetect_manual_merge: true
   default_allow_maintainer_edit: true
   default_branch: "{{ git_repo_default_branch }}"

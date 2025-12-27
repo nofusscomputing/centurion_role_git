@@ -48,6 +48,11 @@
     not repository_exists
 
 
+- name: Setup Repository config Variable
+  ansible.builtin.set_fact:
+    git_api_body_gitea_config: "{{ git_gitea_config_default | combine(git_gitea_config | default({}), recursive=False) }}"
+
+
 - name: Build Repository config
   ansible.builtin.set_fact:
     gitea_configuration_returned: |-
@@ -112,11 +117,11 @@
             {%- if
               key not in skip_keys
                 and
-              key in git_gitea_config
+              key in git_api_body_gitea_config
                 and
               value != ""
                 and
-              git_gitea_config[key] != omit
+              git_api_body_gitea_config[key] != omit
             -%}
 
               {% set ns.configuration = ns.configuration | combine({ key: value }) %}
@@ -124,7 +129,7 @@
             {%- endif -%}
       {%- endfor -%}
 
-      {{ git_gitea_config | combine(ns.configuration | default({}), recursive=True) }}
+      {{ git_api_body_gitea_config | combine(ns.configuration | default({}), recursive=True) }}
   # Note:
   #   - Do not return where git_gitea_config[key]=omit
   #   - Do not return where value=""

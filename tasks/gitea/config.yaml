@@ -8,11 +8,11 @@
       {%- set ns.is_correct = true -%}
       {%- for key, value in gitea_configuration_returned.items() -%}
         {%- if
-          git_gitea_config[key] != value
+          git_api_body_gitea_config[key] != value
 
         -%}
           {%- set ns.is_correct = false -%}
-          {%- set ns.diff = ns.diff | combine({ key: {"actual": value, "expected": git_gitea_config[key] | default('-empty-')} }, recursive=True) -%}
+          {%- set ns.diff = ns.diff | combine({ key: {"actual": value, "expected": git_api_body_gitea_config[key] | default('-empty-')} }, recursive=True) -%}
         {%- endif -%}
       {%- endfor -%}
       {
@@ -32,6 +32,6 @@
     method: PATCH
     register_var: http_patch_gitea_config
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
-    json_body: "{{ git_gitea_config }}"
+    json_body: "{{ git_api_body_gitea_config }}"
   when:
     not config_diff.is_correct
