@@ -26,6 +26,16 @@ Create task enables the creation of a git repository. This includes importing a 
 Variables for each task are a mapping of the required keys that form the body of the API request. The mappings for each task are as defined in the table above.
 
 
+### Create Organisation Repository
+
+To obtain the keys and values for mapping `git_gitea_create_repo_org`, navigate to your local gitea's swagger docs for endpoint `/repos/{owner}/{repo}`.
+
+
+### Create User Repository
+
+Not yet supported.
+
+
 ### Migrate repository
 
 To obtain the keys and values for mapping `git_gitea_migrate`, navigate to your local gitea's swagger docs for endpoint `/repos/migrate`.
