@@ -1,0 +1,40 @@
+---
+
+#
+# Does not work
+#
+# - name: Create Repository
+#   community.general.github_repo:
+#     access_token: "{{ lookup('env', 'GIT_API_TOKEN') }}"
+#     api_url: "{{ git_api_url }}"
+#     organization: "{{ git_repo_owner | default(omit) }}"
+#     name: "{{ git_repo_name }}"
+#     description: "{{ git_repo_description | default(omit) }}"
+#     private: "{{ git_repo_private }}"
+#     state: absent
+#     force_defaults: false
+#     # username: "{{ git_repo_owner | default(omit) }}"
+#   register: result
+#   tags:
+#     - gitea
+
+
+- name: Create Repository
+  ansible.builtin.include_tasks:
+    file: create.yaml
+    apply:
+      tags:
+        - always
+  # returns:
+  #   - gitea_configuration_returned
+  tags:
+    - gitea
+
+
+- name: Check Repository Configuration Exists
+  ansible.builtin.assert:
+    that:
+      - gitea_configuration_returned is defined
+      - gitea_configuration_returned is mapping
+  tags:
+    - gitea

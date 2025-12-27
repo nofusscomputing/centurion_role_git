@@ -1,0 +1,21 @@
+---
+
+galaxy_info:
+  author: No Fuss Computing
+  description: Centurion ERP Role for git Operations
+
+  namespace: nofusscomputing
+  role_name: git
+
+  issue_tracker_url: https://nofusscomputing.com/git/ansible-roles/git/issues
+
+  license: AGPL-3.0-only
+
+  min_ansible_version: "2.1"
+
+  # If this a Container Enabled role, provide the minimum Ansible Container version.
+  # min_ansible_container_version:
+
+  galaxy_tags: []
+
+dependencies: []

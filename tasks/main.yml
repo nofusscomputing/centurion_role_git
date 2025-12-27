@@ -1,0 +1,7 @@
+---
+
+- name: Gitea
+  ansible.builtin.include_tasks:
+    file: gitea/main.yaml
+  tags:
+    - gitea

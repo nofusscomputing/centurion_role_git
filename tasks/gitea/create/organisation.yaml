@@ -1,0 +1,116 @@
+---
+
+- name: Fetch Organisation Repositories
+  ansible.builtin.include_tasks:
+    file: common/http.yaml
+  vars:
+    in_check_mode: false
+    url: "{{ lookup('env', 'GIT_API_URL') }}/orgs/{{ git_repo_owner }}/repos"
+    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') | default(true) }}"
+    method: GET
+    register_var: http_get_gitea_orgs_repos
+    header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
+    json_body: {}
+
+
+- name: Check if Repository Exists
+  ansible.builtin.set_fact:
+    repository_exists: |-
+      {%- set repositories = http_get_gitea_orgs_repos.json | default([]) | list | length | int -%}
+
+      {%- if repositories > 0 -%}
+        {%- for org_repo in http_get_gitea_orgs_repos.json -%}
+          {%- if org_repo.name | string == git_repo_name -%}
+            {{ true }}
+          {%- elif org_repo.name == http_get_gitea_orgs_repos.json[(http_get_gitea_orgs_repos.json | list | length | int) - 1].name -%}
+            {{ false }}
+          {%- endif -%}
+        {%- endfor %}
+      {%- else -%}
+        {{ false }}
+      {%- endif -%}
+
+
+- name: Add a Repository
+  ansible.builtin.include_tasks:
+    file: common/http.yaml
+  vars:
+    url: "{{ lookup('env', 'GIT_API_URL') }}/orgs/{{ git_repo_owner }}/repos"
+    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') | default(true) }}"
+    method: POST
+    register_var: http_post_gitea_orgs_repos
+    header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
+    json_body: "{{ git_gitea_create_repo_org }}"
+  when: >
+    not repository_exists
+      and
+    http_get_gitea_orgs_repos.status == 200
+
+
+- name: Build Repository config
+  ansible.builtin.set_fact:
+    gitea_configuration_returned: |-
+      {%- set skip_keys = [
+        'archived_at',
+        'avatar_url',
+        'clone_url',
+        'created_at',
+        'empty',
+        'fork',
+        'forks_count',
+        'full_name',
+        'html_url',
+        'id',
+        'internal',
+        'language',
+        'languages_url',
+        'licenses',
+        'link',
+        'mirror',
+        'mirror_updated',
+        'object_format_name',
+        'open_issues_count',
+        'open_pr_counter',
+        'original_url',
+        'owner',
+        'parent',
+        'permissions',
+        'release_counter',
+        'repo_transfer',
+        'size',
+        'ssh_url',
+        'stars_count',
+        'topics',
+        'updated_at',
+        'url',
+        'watchers_count'
+
+      ] -%}
+      {%- set ns = namespace( ignore_hosts= []) -%}
+      {%- set ns.configuration = {} -%}
+      {%- set ns.returned_configuration = {} -%}
+      {%- if repository_exists -%}
+        {%- for org_repo in http_get_gitea_orgs_repos.json -%}
+          {%- if org_repo.name | string == git_repo_name -%}
+            {% set ns.returned_configuration = org_repo %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elif not ansible_check_mode|bool -%}
+        {% set ns.returned_configuration = http_post_gitea_orgs_repos.json -%}
+      {%- else -%}
+        {% set ns.returned_configuration = {} -%}
+      {%- endif %}
+
+      {%- for key, value in ns.returned_configuration.items() -%}
+            {%- if
+              key not in skip_keys
+              and
+              key in git_gitea_config
+            -%}
+
+              {% set ns.configuration = ns.configuration | combine({ key: value }) %}
+
+            {%- endif -%}
+      {%- endfor -%}
+
+      {{ git_gitea_config | combine(ns.configuration | default({}), recursive=True) }}
