@@ -6,7 +6,7 @@
 
 <br>
 
-![GitHub forks](https://img.shields.io/github/forks/NofussComputing/2Fcenturion_role_git?logo=github&style=plastic&color=000000&labell=Forks) ![GitHub stars](https://img.shields.io/github/stars/NofussComputing/2Fcenturion_role_git?color=000000&logo=github&style=plastic) ![Github Watchers](https://img.shields.io/github/watchers/NofussComputing/2Fcenturion_role_git?color=000000&label=Watchers&logo=github&style=plastic)
+![GitHub forks](https://img.shields.io/github/forks/NofussComputing/centurion_role_git?logo=github&style=plastic&color=000000&labell=Forks) ![GitHub stars](https://img.shields.io/github/stars/NofussComputing/centurion_role_git?color=000000&logo=github&style=plastic) ![Github Watchers](https://img.shields.io/github/watchers/NofussComputing/centurion_role_git?color=000000&label=Watchers&logo=github&style=plastic)
 
 links:
 
