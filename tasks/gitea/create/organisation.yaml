@@ -16,19 +16,18 @@
 - name: Check if Repository Exists
   ansible.builtin.set_fact:
     repository_exists: |-
+      {%- set ns = namespace( ignore_hosts= []) -%}
+      {%- set ns.exists = false -%}
       {%- set repositories = http_get_gitea_orgs_repos.json | default([]) | list | length | int -%}
 
       {%- if repositories > 0 -%}
         {%- for org_repo in http_get_gitea_orgs_repos.json -%}
           {%- if org_repo.name | string == git_repo_name -%}
-            {{ true }}
-          {%- elif org_repo.name == http_get_gitea_orgs_repos.json[(http_get_gitea_orgs_repos.json | list | length | int) - 1].name -%}
-            {{ false }}
+            {%- set ns.exists = true -%}
           {%- endif -%}
         {%- endfor %}
-      {%- else -%}
-        {{ false }}
       {%- endif -%}
+      {{ ns.exists }}
 
 
 - name: Add a Repository
