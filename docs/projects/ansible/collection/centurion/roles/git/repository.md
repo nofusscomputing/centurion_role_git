@@ -11,6 +11,18 @@ This section contains documentation for repository tasks.
 
 ## Create
 
+| Ansible Tag | Action | Description |
+| :---:|:---|:---|
+| `gitea` | - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
+| | Create Repository | Creates a git repository |
+| _No Tags_ |  | If no tags are specified, then no task will run. |
+
+Create task enables the creation of a git repository. The Tasks are smart enough to determine between a user and an organization repository.
+
+
+### Workflow
+
+The create task follows the following workflow.
 
 ``` mermaid
 
