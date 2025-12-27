@@ -1,0 +1,22 @@
+---
+
+- name: Confirm that service is set
+  ansible.builtin.assert:
+    that:
+      - git_gitea_repo_migrate.service is defined
+      - git_gitea_repo_migrate.service != omit
+    msg: >-
+      Could not determine the service type.
+      You must set service to one of [ git, github, gitea, gitlab, gogs, onedev, gitbucket, codebase, codecommit ]
+
+
+- name: Add Repository Migration
+  ansible.builtin.include_tasks:
+    file: common/http.yaml
+  vars:
+    url: "{{ lookup('env', 'GIT_API_URL') }}/repos/migrate"
+    validate_certs: "{{ lookup('env', 'GIT_API_VALIDATE_CERT') | default(true) }}"
+    method: POST
+    register_var: http_post_gitea_migration
+    header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
+    json_body: "{{ git_gitea_repo_migrate }}"

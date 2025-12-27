@@ -3,7 +3,7 @@ name: "Major Feature / Group of Features Epic"
 description: "Capture multiple features as part of an epic."
 title: "<Feature group title>"
 labels: 
-  - "triage"
+  - "Type/Feature"
 type: feature
 
 

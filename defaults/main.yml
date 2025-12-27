@@ -1,0 +1,101 @@
+---
+
+
+# git_api_url:
+
+# git_repo_owner:
+# git_repo_name:
+# git_repo_description:
+# git_repo_clone_addr:
+
+git_repo_private: false
+git_repo_default_branch: master
+
+
+git_gitea_create_repo_org:
+  auto_init: false
+  default_branch: "{{ git_repo_default_branch }}"
+  description: "{{ git_repo_description | default(omit) }}"
+  # gitignores: string
+  # issue_labels: string
+  # license: string
+  name: "{{ git_repo_name }}"
+  object_format_name: sha1    # sha1, sha256
+  private: "{{ git_repo_private }}"
+  # readme: string
+  template: false
+  trust_model: default    # default, collaborator, committer, collaboratorcommitter
+
+
+git_gitea_config:
+  allow_fast_forward_only_merge: true
+  allow_manual_merge: true
+  allow_merge_commits: true
+  allow_rebase: true
+  allow_rebase_explicit: true
+  allow_rebase_update: true
+  allow_squash_merge: true
+  archived: false
+  autodetect_manual_merge: true
+  default_allow_maintainer_edit: true
+  default_branch: "{{ git_repo_default_branch }}"
+  default_delete_branch_after_merge: true
+  default_merge_style: merge    # "merge", "rebase", "rebase-merge", "squash", or "fast-forward-only"
+  description: "{{ git_repo_description | default(omit) }}"
+  enable_prune: true
+  # external_tracker:
+  #   external_tracker_format: string
+  #   external_tracker_regexp_pattern: string
+  #   external_tracker_style: string
+  #   external_tracker_url: string
+  # external_wiki:
+  #   external_wiki_url: string
+  has_actions: true
+  has_issues: true
+  has_packages: true
+  has_projects: true
+  has_pull_requests: true
+  has_releases: true
+  has_wiki: true
+  ignore_whitespace_conflicts: true
+  # internal_tracker:
+  #   allow_only_contributors_to_track_time: true
+  #   enable_issue_dependencies: true
+  #   enable_time_tracker: true
+  mirror_interval: 0s
+  private: "{{ git_repo_private }}"
+  projects_mode: all    # repo to only allow repo-level projects, owner to only allow owner projects, all to allow both.
+  template: false
+  # website: string
+
+
+git_gitea_repo_migrate:
+  # auth_password: string
+  # auth_token: string
+  # auth_username: string
+  # aws_access_key_id: string
+  # aws_secret_access_key: string
+  clone_addr: "{{ git_repo_clone_addr | default(omit) }}"
+  description: "{{ git_repo_description | default(omit) }}"
+  issues: false
+  labels: false
+  lfs: false
+  # lfs_endpoint: string
+  milestones: false
+  mirror: false
+  mirror_interval: "{{ git_gitea_config.mirror_interval }}"
+  private: "{{ git_gitea_config.private }}"
+  pull_requests: false
+  releases: false
+  repo_name: "{{ git_repo_name }}"
+  repo_owner: "{{ git_repo_owner }}"
+  # [ git, github, gitea, gitlab, gogs, onedev, gitbucket, codebase, codecommit ]
+  service: |-
+    {%- if "github" in git_repo_clone_addr -%}
+      github
+    {%- elif "gitlab" in git_repo_clone_addr -%}
+      gitlab
+    {%- else -%}
+      {{ omit }}
+    {%- endif %}
+  wiki: false

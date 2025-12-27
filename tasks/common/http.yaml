@@ -1,0 +1,36 @@
+---
+
+- name: Try/Always
+  block:
+
+    # - name: Check
+    #   ansible.builtin.assert:
+    #     that:
+    #       - 
+
+    - name: HTTP/{{ method }} {{ url }}
+      ansible.builtin.uri:
+        url: "{{ url }}"
+        method: "{{ method }}"
+        headers:
+          Authorization: "{{ header_authorization | default(omit) }}"
+          Content-Type: "application/json"
+        body_format: json
+        body: "{{ json_body }}"
+        status_code:
+          - 200
+          - 201
+        validate_certs: "{{ validate_certs | default(true) }}"
+      changed_when: >
+        url_request.status == 201
+      check_mode: "{{ in_check_mode | default(omit) }}"
+      register: url_request
+      no_log: >    # Contains a secret that logging shows
+          {{ nfc_pb_disable_log | default(true) }}
+
+
+  always:
+
+    - name: Set register Var for {{ url }}
+      ansible.builtin.set_fact:
+        "{{register_var}}": "{{ url_request }}"

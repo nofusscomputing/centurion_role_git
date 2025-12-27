@@ -3,7 +3,7 @@ name: "Simple Feature Request (User Story)"
 description: "Request a new feature for the ERP system"
 title: "[Feature]: <short summary>"
 labels: 
-  - "triage"
+  - "Type/User Story"
 type: story
 
 body:
