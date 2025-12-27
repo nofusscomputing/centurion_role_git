@@ -15,7 +15,7 @@ This section contains documentation for repository tasks.
 | :---:|:---|:---:|:---:|:---|
 | `gitea` | - | - |  - | Ensures that Gitea related tasks run. **Mandatory for Gitea**|
 | | Create Organisation<br>Repository | Yes | `git_gitea_create_repo_org` | Creates a git repository |
-| | Migrate Repository | Yes | `git_gitea_repo_migrate` | Imports a git repository |
+| | Migrate Repository | Yes | `git_gitea_repo_migrate` | Imports a git repository. This will occur if variable `git_repo_clone_addr` is set, failing to set this variable and no repository will be migrated. |
 | _No Tags_ | - | - | - | If no tags are specified, then no task will run. |
 
 Create task enables the creation of a git repository. This includes importing a repository. The Tasks are smart enough to determine between a user and an organization repository.
@@ -30,6 +30,15 @@ Variables for each task are a mapping of the required keys that form the body of
 
 To obtain the keys and values for mapping `git_gitea_create_repo_org`, navigate to your local gitea's swagger docs for endpoint `/repos/{owner}/{repo}`.
 
+In addition, the following table lists variables, that if you set will be over-ridden. To set the value of the variable, set the value of the source variable.
+
+| Name | Source<br>Variable |
+|:---:|:---:|
+| `default_branch` | `git_repo_default_branch` |
+| `description` | `git_repo_description` |
+| `name` | `git_repo_name` |
+| `private` | `git_repo_private` |
+
 
 ### Create User Repository
 
@@ -39,6 +48,17 @@ Not yet supported.
 ### Migrate repository
 
 To obtain the keys and values for mapping `git_gitea_repo_migrate`, navigate to your local gitea's swagger docs for endpoint `/repos/migrate`.
+
+In addition, the following table lists variables, that if you set will be over-ridden. To set the value of the variable, set the value of the source variable.
+
+| Name | Source<br>Variable |
+|:---:|:---:|
+| `clone_addr` | `git_repo_clone_addr` |
+| `description` | `git_repo_description` |
+| `mirror_interval` | `git_gitea_config.mirror_interval` |
+| `private` | `git_repo_private` |
+| `repo_name` | `git_repo_name` |
+| `repo_owner` | `git_repo_owner` |
 
 
 ## Workflow
