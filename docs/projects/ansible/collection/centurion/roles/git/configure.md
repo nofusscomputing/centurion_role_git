@@ -27,7 +27,7 @@ Variables for each task are a mapping of the required keys that form the body of
 
 ### Configure a Repository
 
-To obtain the keys and values for mapping `git_gitea_create_repo_org`, navigate to your local gitea's swagger docs for endpoint `PATCH /repos/{owner}/{repo}`.
+To obtain the keys and values for mapping `git_gitea_config`, navigate to your local gitea's swagger docs for endpoint `PATCH /repos/{owner}/{repo}`.
 
 In addition, the following table lists variables, that if you set will be over-ridden. To set the value of the variable, set the value of the source variable.
 
