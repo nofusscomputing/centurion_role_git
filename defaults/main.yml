@@ -6,6 +6,7 @@
 # git_repo_owner:
 # git_repo_name:
 # git_repo_description:
+# git_repo_clone_addr:
 
 git_repo_private: false
 git_default_branch: master
@@ -18,7 +19,7 @@ git_gitea_create_repo_org:
   # gitignores: string
   # issue_labels: string
   # license: string
-  # name: string
+  name: "{{ git_repo_name }}"
   object_format_name: sha1    # sha1, sha256
   private: "{{ git_repo_private }}"
   # readme: string
@@ -66,3 +67,35 @@ git_gitea_config:
   projects_mode: all    # repo to only allow repo-level projects, owner to only allow owner projects, all to allow both.
   template: false
   # website: string
+
+
+git_gitea_migrate:
+  # auth_password: string
+  # auth_token: string
+  # auth_username: string
+  # aws_access_key_id: string
+  # aws_secret_access_key: string
+  clone_addr: "{{ git_repo_clone_addr | default(omit) }}"
+  description: "{{ git_repo_description | default(omit) }}"
+  issues: false
+  labels: false
+  lfs: false
+  # lfs_endpoint: string
+  milestones: false
+  mirror: false
+  mirror_interval: "{{ git_gitea_config.mirror_interval }}"
+  private: true
+  pull_requests: false
+  releases: false
+  repo_name: "{{ git_repo_name }}"
+  repo_owner: "{{ git_repo_owner }}"
+  # [ git, github, gitea, gitlab, gogs, onedev, gitbucket, codebase, codecommit ]
+  service: |-
+    {%- if "github" in git_repo_clone_addr -%}
+      github
+    {%- elif "gitlab" in git_repo_clone_addr -%}
+      gitlab
+    {%- else -%}
+      {{ omit }}
+    {%- endif %}
+  wiki: false

@@ -1,16 +1,11 @@
 ---
 
-- name: Try/Always
-  block:
-
-
-    - name: Fetch Authenticated User
-      ansible.builtin.include_tasks:
-        file: fetch_auth_user.yaml
-        apply:
-          tags:
-            - always
-
+- name: Fetch Authenticated User
+  ansible.builtin.include_tasks:
+    file: fetch_auth_user.yaml
+    apply:
+      tags:
+        - always
 
 - name: Determin Repository Type
   ansible.builtin.set_fact:
@@ -22,27 +17,107 @@
       {%- endif -%}
 
 
-- name: Try/Always
-  when: repository_type == 'organisation'
-  block:
+- name: Create Organisation Repository
+  ansible.builtin.include_tasks:
+    file: create/organisation.yaml
+    apply:
+      tags:
+        - always
+  when: >
+    repository_type == 'organisation'
 
 
-    - name: Create Organisation Repository
-      ansible.builtin.include_tasks:
-        file: create/organisation.yaml
-        apply:
-          tags:
-            - always
+- name: Create User Repository
+  ansible.builtin.assert:
+    that:
+      - false
+    msg: "Unable to create user repository as the feature does not exist."
+  when: >
+    repository_type == 'user'
 
 
-- name: Try/Always
-  when: repository_type == 'user'
-  block:
+- name: Migrate Repository
+  ansible.builtin.include_tasks:
+    file: create/migration.yaml
+    apply:
+      tags:
+        - always
+  when: >
+    git_repo_clone_addr is defined
+      and
+    not org_repository_exists
 
 
-    - name: Create User Repository
-      ansible.builtin.assert:
-        that:
-          - false
-        msg: "Unable to create user repository as the feature does not exist."
-      # needs to return: gitea_configuration_returned
+- name: Build Repository config
+  ansible.builtin.set_fact:
+    gitea_configuration_returned: |-
+      {%- set skip_keys = [
+        'archived_at',
+        'avatar_url',
+        'clone_url',
+        'created_at',
+        'empty',
+        'fork',
+        'forks_count',
+        'full_name',
+        'html_url',
+        'id',
+        'internal',
+        'language',
+        'languages_url',
+        'licenses',
+        'link',
+        'mirror',
+        'mirror_updated',
+        'object_format_name',
+        'open_issues_count',
+        'open_pr_counter',
+        'original_url',
+        'owner',
+        'parent',
+        'permissions',
+        'release_counter',
+        'repo_transfer',
+        'size',
+        'ssh_url',
+        'stars_count',
+        'topics',
+        'updated_at',
+        'url',
+        'watchers_count'
+
+      ] -%}
+      {%- set ns = namespace( ignore_hosts= []) -%}
+      {%- set ns.configuration = {} -%}
+      {%- set ns.returned_configuration = {} -%}
+      {%- if org_repository_exists -%}
+        {%- for org_repo in http_get_gitea_orgs_repos.json -%}
+          {%- if org_repo.name | string == git_repo_name -%}
+            {% set ns.returned_configuration = org_repo %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elif not ansible_check_mode|bool -%}
+        {%- if http_post_gitea_orgs_repos is defined -%}
+          {% set ns.returned_configuration = http_post_gitea_orgs_repos.json -%}
+        {%- elif http_post_gitea_migration is defined -%}
+          {% set ns.returned_configuration = http_post_gitea_migration.json -%}
+        {%- else -%}
+          {% set ns.returned_configuration = {} -%}
+        {%- endif -%}
+      {%- else -%}
+        {% set ns.returned_configuration = {} -%}
+      {%- endif %}
+
+      {%- for key, value in ns.returned_configuration.items() -%}
+            {%- if
+              key not in skip_keys
+              and
+              key in git_gitea_config
+            -%}
+
+              {% set ns.configuration = ns.configuration | combine({ key: value }) %}
+
+            {%- endif -%}
+      {%- endfor -%}
+
+      {{ git_gitea_config | combine(ns.configuration | default({}), recursive=True) }}
