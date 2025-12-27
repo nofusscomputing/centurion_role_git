@@ -1,0 +1,45 @@
+---
+
+- name: Try/Always
+  block:
+
+
+    - name: Fetch Authenticated User
+      ansible.builtin.include_tasks:
+        file: fetch_auth_user.yaml
+
+
+- name: Determin Repository Type
+  ansible.builtin.set_fact:
+    repository_type: |-
+      {%- if http_get_gitea_user.json.login | string == git_repo_owner | string -%}
+        user
+      {%- else -%}
+        organisation
+      {%- endif -%}
+
+
+- name: Try/Always
+  when: repository_type == 'organisation'
+  block:
+
+
+    - name: Create Organisation Repository
+      ansible.builtin.include_tasks:
+        file: create/organisation.yaml
+        apply:
+          tags:
+            - always
+
+
+- name: Try/Always
+  when: repository_type == 'user'
+  block:
+
+
+    - name: Create User Repository
+      ansible.builtin.assert:
+        that:
+          - false
+        msg: "Unable to create user repository as the feature does not exist."
+      # needs to return: gitea_configuration_returned
