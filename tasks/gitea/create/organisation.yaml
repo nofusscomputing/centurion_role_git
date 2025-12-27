@@ -39,7 +39,7 @@
     method: POST
     register_var: http_post_gitea_orgs_repos
     header_authorization: "Bearer {{ lookup('env', 'GIT_API_TOKEN') }}"
-    json_body: "{{ git_gitea_create_repo_org }}"
+    json_body: "{{ git_gitea_create_repo_org_default }}"
   when: >
     not repository_exists
       and
