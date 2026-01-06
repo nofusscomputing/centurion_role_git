@@ -1,3 +1,9 @@
+## 0.3.1 (2026-01-06)
+
+### Fixes
+
+- **create**: correctly check if var `git_repo_clone_addr` is set so that migration works
+
 ## 0.3.0 (2025-12-27)
 
 ### feat
