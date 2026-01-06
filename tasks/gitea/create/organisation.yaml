@@ -44,4 +44,5 @@
     not repository_exists
       and
     http_get_gitea_orgs_repos.status == 200
-
+      and
+    git_repo_clone_addr is not defined

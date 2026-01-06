@@ -1,9 +1,9 @@
-INHERIT: website-template/mkdocs.yml
+INHERIT: docs_template/mkdocs.yml
 
 docs_dir: 'docs'
 
 repo_name: Centurion Role Git
-repo_url: https://github.com/nofusscomputing/centurion_erp
+repo_url: https://github.com/nofusscomputing/centurion_role_git
 edit_uri: '/edit/development/docs/'
 theme: 
   icon:

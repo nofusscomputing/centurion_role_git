@@ -83,8 +83,8 @@ git_gitea_repo_migrate_default:
   # lfs_endpoint: string
   milestones: false
   mirror: false
-  mirror_interval: "{{ git_gitea_config.mirror_interval }}"
-  private: "{{ git_gitea_config.private }}"
+  mirror_interval: "{{ git_gitea_config.mirror_interval | default(git_gitea_config_default.mirror_interval) }}"
+  private: "{{ git_gitea_config.private | default(git_gitea_config_default.private) }}"
   pull_requests: false
   releases: false
   repo_name: "{{ git_repo_name }}"
